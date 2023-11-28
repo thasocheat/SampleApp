@@ -1,0 +1,105 @@
+﻿@model IEnumerable<SampleApp.Models.Pet>
+
+@{
+    ViewBag.Title = "ViewAll";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+}
+
+
+
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- Large modal -->
+                <h1>Welcome to CRUD ajax with ASP.Net (Visual Studio 2022)</h1>
+                @*<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>*@
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Basic Datatable</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="example" class="display" style="min-width: 845px">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.PetName)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetAge)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetGender)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetImagePath)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody" id="petTableBody">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.PetName)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.PetAge)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.PetGender)</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.PetImagePath))
+                                        {
+                                            <img src="@Url.Content(item.PetImagePath)" width="50" height="50" alt="Pet Image" />
+                                        }
+                                        else
+                                        {
+                                            <img src="path/to/default/image.jpg" width="50" height="50" alt="Default Image" />
+                                        }
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary btn-sm" onclick="Edit('@Url.Action("AddOrEdit","Pet", new { id=@item.PetID })')"><i class="fa fa-pencil fa-lg"></i></a>
+                                        @*<a class="btn btn-info btn-sm" onclick=""><i class="fa fa-eye fa-lg"></i></a>*@
+                                        @*<a class="btn btn-danger btn-sm" onclick="Delete('@Url.Action("Delete","Pet", new { id=@item.PetID })')"><i class="fa fa-trash fa-lg"></i></a>*@
+                                        <a class="btn btn-danger btn-sm" onclick="confirmDelete('@Url.Action("Delete","Pet", new { id=@item.PetID })',@item.PetID)"><i class="fa fa-trash fa-lg"></i></a>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.PetName)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetAge)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetGender)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetImagePath)</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Pet</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="basic-form">
+                            @*@Html.Action("AddOrEdit", "Pet")*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

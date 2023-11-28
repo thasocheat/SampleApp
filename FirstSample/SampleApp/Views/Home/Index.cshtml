@@ -1,0 +1,118 @@
+﻿@model IEnumerable<SampleApp.Models.Pet>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-lg-3 col-sm-6">
+        <div class="card">
+            <div class="stat-widget-two card-body">
+                <div class="stat-content">
+                    <div class="stat-text">Today Expenses </div>
+                    <div class="stat-digit"> <i class="fa fa-usd"></i>8500</div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success w-85" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <div class="card">
+            <div class="stat-widget-two card-body">
+                <div class="stat-content">
+                    <div class="stat-text">Income Detail</div>
+                    <div class="stat-digit"> <i class="fa fa-usd"></i>7800</div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-primary w-75" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <div class="card">
+            <div class="stat-widget-two card-body">
+                <div class="stat-content">
+                    <div class="stat-text">Task Completed</div>
+                    <div class="stat-digit"> <i class="fa fa-usd"></i> 500</div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning w-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <div class="card">
+            <div class="stat-widget-two card-body">
+                <div class="stat-content">
+                    <div class="stat-text">Task Completed</div>
+                    <div class="stat-digit"> <i class="fa fa-usd"></i>650</div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-danger w-65" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+        </div>
+        <!-- /# card -->
+    </div>
+    <!-- /# column -->
+</div>
+
+
+
+
+@*<ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#firstTab">View All</a></li>
+        <li><a data-toggle="tab" href="#secondTab">Add New</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="firstTab" class="tab-pane fade in active">@Html.Action("ViewAll", "Pet")</div>
+        <div id="secondTab" class="tab-pane fade in">2</div>
+    </div>*@
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Pet Insert Form</h4>
+            </div>
+            <div class="card-body">
+                <!-- Nav tabs -->
+                <div class="default-tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#view">View All</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#addOredit">Add New</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="view" role="tabpanel">
+                            <div class="pt-4">
+                                @*<script>
+                                        var viewAllUrl = '@Url.Action("ViewAll", "Pet")';
+                                    </script>*@
+                                @*<a href="@Url.Action("ViewAll", "Pet")" aria-expanded="false"></a>*@
+
+                                @Html.Action("ViewAll", "Pet")
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="addOredit">
+                            <div class="pt-4">
+                                @Html.Action("AddOrEdit", "Pet")
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

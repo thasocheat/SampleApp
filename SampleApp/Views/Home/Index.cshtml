@@ -1,9 +1,13 @@
-﻿@model IEnumerable<SampleApp.Models.Pet>
+﻿@*@model IEnumerable<SampleApp.Models.Pet>*@
+@model IEnumerable<SampleApp.Models.ModalPets>
+
 @{
     ViewBag.Title = "Home Page";
 }
 
-<div class="row">
+
+
+<!--<div class="row">
     <div class="col-lg-3 col-sm-6">
         <div class="card">
             <div class="stat-widget-two card-body">
@@ -54,11 +58,11 @@
                     <div class="progress-bar progress-bar-danger w-65" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- /# card -->
-    </div>
+    <!--</div>-->
     <!-- /# column -->
-</div>
+<!--</div>-->
 
 
 
@@ -72,15 +76,15 @@
         <div id="secondTab" class="tab-pane fade in">2</div>
     </div>*@
 
-<div class="row">
+<!--<div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Pet Insert Form</h4>
             </div>
-            <div class="card-body">
-                <!-- Nav tabs -->
-                <div class="default-tab">
+            <div class="card-body">-->
+<!-- Nav tabs -->
+<!--<div class="default-tab">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#view">View All</a>
@@ -92,17 +96,17 @@
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="view" role="tabpanel">
                             <div class="pt-4">
-                                @*<script>
-                                        var viewAllUrl = '@Url.Action("ViewAll", "Pet")';
-                                    </script>*@
-                                @*<a href="@Url.Action("ViewAll", "Pet")" aria-expanded="false"></a>*@
+                                <script>
+                                        var viewAllUrl = '';
+                                    </script>
+                                <a href="" aria-expanded="false"></a>
 
-                                @Html.Action("ViewAll", "Pet")
+                               
                             </div>
                         </div>
                         <div class="tab-pane fade" id="addOredit">
                             <div class="pt-4">
-                                @Html.Action("AddOrEdit", "Pet")
+
                             </div>
                         </div>
 
@@ -111,7 +115,120 @@
             </div>
         </div>
     </div>
+</div>-->
+@*@Url.Action("ViewAll", "Pet")*@
+@*@Html.Action("AddOrEdit", "Pet")*@
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- Large modal -->
+                <h1>Welcome to CRUD ajax with ASP.Net (Visual Studio 2022)</h1>
+                <button type="button" class="btn btn-primary float-right" id="addNew" data-toggle="modal" data-target=".bd-example-modal-lg">Add New</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Basic Datatable</h4>
+            </div>
+          
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="example" class="display" style="min-width: 845px">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.PetID)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetName)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetAge)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetGender)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetImagePath)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="petTableBody">
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.PetID)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetName)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetAge)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetGender)</th>
+                                <th>@Html.DisplayNameFor(model => model.PetImagePath)</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Add New Pet</h5>
+                    <button type="button" class="btn btn-info close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="basic-form">
+                            <div class="card-body">
+                                <div class="basic-form">
+                                    <form id="formUpload" enctype="multipart/form-data">
+                                        <div class="form-row">
+                                            <input type="hidden" class="form-control" id="PetID" placeholder="Id"/>
+                                            <div class="form-group col-md-6">
+                                                <label id="PetNameError">Name</label>
+                                                <input type="text" class="form-control" placeholder="Name" id="PetName" required>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label id="PetAgeError">Age</label>
+                                                <input type="text" class="form-control" placeholder="Age" id="PetAge" required>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label id="PetGenderError">Select Gender</label>
+                                                <select id="PetGender" class="form-control">
+                                                    <option selected>Choose...</option>
+                                                    <option>Female</option>
+                                                    <option>Male</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group col-md-6">
+                                                <label id="fileUploadError">Upload Image</label>
+                                                <div class="input-group mb-3">
+                                                    <img src="~/AppFiles/Images/default.png" style="margin:10px" height="100" width="100" id="imagePreview" />
+                                                    <input type="file" id="fileUpload" name="ImageUpload" accept="image/jpeg, image/png" onchange="showImagePreview(this,document.getElementById('imagePreview'))" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                                            <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="return Update();">Update</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")

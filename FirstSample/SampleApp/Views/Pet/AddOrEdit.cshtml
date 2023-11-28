@@ -1,0 +1,156 @@
+﻿@model SampleApp.Models.Pet
+
+@{
+    ViewBag.Title = "AddOrEdit";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+}
+
+@*<h2>AddOrEdir</h2>*@
+
+@using (Html.BeginForm("AddOrEdit", "Pet", FormMethod.Post, new { id = "myForm", enctype = "multipart/form-data", onSubmit = "return PetPost(this);", data_resetUrl = Url.Action("AddOrEdit", "Pet", new { id = 0 }) }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @*<div class="card-body">
+                <div class="basic-form">
+                    <form id="formUpload" enctype="multipart/form-data">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label>Name</label>
+                                <input type="text" class="form-control" placeholder="Name" id="name" required>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Age</label>
+                                <input type="text" class="form-control" placeholder="Age" id="age" required>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Select Gender</label>
+                                <select id="inputState" class="form-control">
+                                    <option selected>Choose...</option>
+                                    <option>Female</option>
+                                    <option>Male</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label>Upload Image</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Upload</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="fileUpload" accept="image/*" required>
+                                        <label class="custom-file-label">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <button type="submit" id="btnSubmit" class="btn btn-primary mb-2">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>*@
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Large modal -->
+                        <h1>Welcome to CRUD ajax with ASP.Net (Visual Studio 2022)</h1>
+                        @*<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>*@
+                    </div>
+                </div>
+            </div>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.PetID, new { id = "petID" })
+            @Html.HiddenFor(model => model.PetImagePath)
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PetName, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PetName, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.ValidationMessageFor(model => model.PetName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PetAge, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PetAge, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.ValidationMessageFor(model => model.PetAge, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PetGender, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.PetGender,
+                            new SelectList(
+                                new List<SelectListItem>
+                                {
+                                    new SelectListItem { Text = "Male", Value = "Male" },
+                                    new SelectListItem { Text = "Female", Value = "Female" },
+                                    // Add more options as needed
+                                }, "Value", "Text"),
+                            "-- Select Gender --",
+                            new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PetGender, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                @*<div class="form-group">
+                        @Html.LabelFor(model => model.PetGender, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.PetGender, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PetGender, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PetImagePath, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-10">
+                        <div class="card">
+                            <div class="stat-widget-two card-body">
+                                <div class="stat-content">
+                                    <img src="@Url.Content(Model.PetImagePath)" style="margin:10px" height="200" width="200" id="imagePreview" />
+                                    <input type="file" name="ImageUpload" accept="image/jpeg, image/png" onchange="showImagePreview(this,document.getElementById('imagePreview'))" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-12">
+                    <input type="submit" value="Submit" id="submitButton" class="btn btn-info" />
+                    @if (Model.PetID != 0)
+                    {
+                        <a class="btn btn-outline-success" onclick="refreshAddNewTab('@Url.Action("AddOrEdit", "Pet", new {id=0})',false)"><i class="fa fa-plus"></i> Add New </a>
+                    }
+                </div>
+                @*<div class="col-md-offset-2 col-md-10">
+                        <button type="button" id="cancelButton" class="btn btn-outline-primary" onclick="CancelOperation">Cancel</button>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+
+}
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@

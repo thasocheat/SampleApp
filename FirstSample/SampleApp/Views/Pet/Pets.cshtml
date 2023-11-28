@@ -1,0 +1,247 @@
+﻿
+@{
+    ViewBag.Title = "Pets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+
+@* <script>
+        $(document).ready(function () {
+            //Start of the document ready function
+            $("#btnSubmit").click(function () {
+                var frmData = new FormData();
+                var filebase = $("#photo").get(0);
+                var files = filebase.files;
+                frmData.append("name", "age", "gender");
+                frmData.append(files[0].name, files[0]);
+                $.ajax({
+                    url: '/Home/Pet',
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: frmData,
+                    success: function (data) {
+                        $('#myModal').modal('show');
+                        $('#txtMessage').html(data.message);
+                        if (data.success) {
+                            $('.modal-header').addClass('alert alert-success');
+                        } else {
+                            $('.modal-header').addClass('alert alert-info');
+                        }
+                    },
+                    error: function (err) {
+                        $('#myModal').modal('show');
+                        $('.modal-header').addClass('alert alert-danger');
+                        $('#txtMessage').html(err.statusText);
+                    }
+                });
+            });
+
+            //End of the document ready function...
+        });
+    </script> *@
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <!-- Large modal -->
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Basic Datatable</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="example" class="display" style="min-width: 845px">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Age</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Office</th>
+                                <th>Age</th>
+                                <th>Start date</th>
+                                <th>Salary</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Pet</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="basic-form">
+                            <form id="formUpload" enctype="multipart/form-data">
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-6">
+                                        <label>Name</label>
+                                        <input type="text" class="form-control" placeholder="Name" id="name" required>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Age</label>
+                                        <input type="text" class="form-control" placeholder="Age" id="age" required>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Select Gender</label>
+                                        <select id="inputState" class="form-control">
+                                            <option selected>Choose...</option>
+                                            <option>Female</option>
+                                            <option>Male</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>Upload Image</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Upload</span>
+                                            </div>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="fileUpload" accept="image/*" required>
+                                                <label class="custom-file-label">Choose file</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <button type="submit" id="btnSubmit" class="btn btn-primary mb-2">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+			$(document).ready(function () {
+				loadPets();
+
+				$("#btnSubmit").on("click", function () {
+					savePet();
+				});
+			});
+
+			function loadPets() {
+				$.ajax({
+					url: "/Pet/GetPets",
+					type: "GET",
+					success: function (data) {
+						displayPets(data);
+					},
+					error: function () {
+						console.log("Error loading pets");
+					}
+				});
+			}
+
+			function displayPets(pets) {
+				$("#petTableBody").empty();
+				$.each(pets, function (index, pet) {
+					var row = "<tr>";
+					row += "<td>" + pet.Id + "</td>";
+					row += "<td>" + pet.Name + "</td>";
+					row += "<td>" + pet.Age + "</td>";
+					row += "<td>" + pet.Gender + "</td>";
+					row += "<td><img src='/Content/PetImages/" + pet.ImagePath + "' alt='Pet Image' width='50' height='50'></td>";
+					row += "<td><button class='btn btn-danger' onclick='deletePet(" + pet.Id + ")'>Delete</button></td>";
+					row += "</tr>";
+					$("#petTableBody").append(row);
+				});
+			}
+
+			function savePet() {
+				var formData = new FormData();
+				formData.append("name", $("#name").val());
+				formData.append("age", $("#age").val());
+				formData.append("gender", $("#gender").val());
+				formData.append("file", $("#fileUpload")[0].files[0]);
+
+				$.ajax({
+					url: "/Pet/SavePet",
+					type: "POST",
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (data) {
+						if (data.success) {
+							loadPets();
+							clearForm();
+							alert("Pet added successfully");
+						} else {
+							alert("Error adding pet: " + data.message);
+						}
+					},
+					error: function () {
+						alert("Error adding pet");
+					}
+				});
+			}
+
+			function deletePet(id) {
+				$.ajax({
+					url: "/Pet/DeletePet/" + id,
+					type: "POST",
+					success: function (data) {
+						if (data.success) {
+							loadPets();
+							alert("Pet deleted successfully");
+						} else {
+							alert("Error deleting pet: " + data.message);
+						}
+					},
+					error: function () {
+						alert("Error deleting pet");
+					}
+				});
+			}
+
+			function clearForm() {
+				$("#name").val("");
+				$("#age").val("");
+				$("#gender").val("");
+				$("#fileUpload").val("");
+			}
+    </script>
+
+
+
